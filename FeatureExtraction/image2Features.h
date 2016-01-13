@@ -1,0 +1,4 @@
+#ifndef IMAGE2FEATURES_H
+#define IMAGE2FEATURES_H
+
+#endif // IMAGE2FEATURES_H

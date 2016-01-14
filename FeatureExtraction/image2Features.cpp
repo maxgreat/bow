@@ -1,5 +1,6 @@
 #include <image2Features.h>
 
+
 using namespace std;
 using namespace cv;
 
@@ -7,12 +8,14 @@ using namespace cv;
 void images2SIFT(std::vector<string> imagesNames, std::vector<std::vector<cv::KeyPoint> > & imagesKeypoints, std::vector<cv::Mat> & imagesDescriptors){
     imagesKeypoints.resize(0);
     imagesDescriptors.resize(0);
+    int i = 0;
     for(vector<string>::iterator it = imagesNames.begin(); it != imagesNames.end(); it++){
         std::vector<cv::KeyPoint> kp;
         cv::Mat desc;
         image2SIFTFeatures(cv::imread(*it), kp, desc);
         imagesKeypoints.push_back(kp);
         imagesDescriptors.push_back(desc);
+        loadBar(i, imagesNames.size());
     }
 }
 
@@ -30,7 +33,7 @@ int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> kp, cv::Mat & descr
 }
 
 
-std::vector<std::string> selectImages(std::string directory, int nbImages=-1){
+std::vector<std::string> selectImages(std::string directory, int nbImages /* =-1 */){
     std::vector <string> imList;
     glob_t globbuf;
     glob(directory.c_str(), GLOB_DOOFFS, NULL, &globbuf);
@@ -46,6 +49,18 @@ std::vector<std::string> selectImages(std::string directory, int nbImages=-1){
         }
     }
     return imList;
+}
+
+std::vector<std::vector< double> > descriptorMat2VectorList(cv::Mat descriptors){
+    std::vector<std::vector< double> > descList;
+    descList.resize(descriptors.rows);
+    for(int i = 0; i < descriptors.rows; i++){
+        descList[i].resize(descriptors.cols);
+        for(int j = 0; j < descriptors.cols; j++){
+            descList[i][j] = descriptors.at<double>(i,j);
+        }
+    }
+    return descList;
 }
 
 

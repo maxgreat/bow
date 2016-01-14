@@ -12,6 +12,10 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
+#include "drawing.h"
+#include <vector>
+#include <glob.h>
+
 using namespace std;
 using namespace cv;
 
@@ -43,5 +47,13 @@ int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> kp, cv::Mat & descr
  * @return list of images
  */
 std::vector<std::string> selectImages(std::string directory, int nbImages=-1);
+
+/**
+ * @brief descriptorMat2VectorList
+ * @param descriptors
+ * @return list of descriptors
+ */
+std::vector<std::vector< double> > descriptorMat2VectorList(cv::Mat descriptors);
+
 
 #endif // IMAGE2FEATURES_H

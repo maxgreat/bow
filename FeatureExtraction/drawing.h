@@ -9,7 +9,7 @@
 
 #include <iomanip>
 #include <iostream>
-
+#include <vector>
 
 /**
  * @brief loadBar

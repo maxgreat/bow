@@ -1,5 +1,12 @@
+/**
+  * Image to Features
+  * Extract SIFT, ORB, or Akaze features from image, using opencv
+  * @author Maxime Portaz
+*/
+
 #ifndef IMAGE2FEATURES_H
 #define IMAGE2FEATURES_H
+
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -8,19 +15,14 @@
 using namespace std;
 using namespace cv;
 
-int image2Features(cv::Mat im, vector<KeyPoint> kp, cv::Mat & descriptors){
-    //Detection of Keypoints
-    FeatureDetector fd = FeatureDetector::create("SIFT");
-    fd.detect(im,kp);
-
-    //Extraction of features
-    DescriptorExtractor de = DescriptorExtractor::create("SIFT");
-    de.compute(im,kp,descriptors);
-
-    return kp.size();
-}
-
-
+/**
+ * @brief image2SIFTFeatures
+ * @param im : the input image
+ * @param kp : output keypoint list
+ * @param descriptors : output descriptors list (in cv::Mat)
+ * @return nomber of descriptors
+ */
+int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> kp, cv::Mat & descriptors);
 
 
 #endif // IMAGE2FEATURES_H

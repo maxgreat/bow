@@ -1,3 +1,8 @@
+/**
+ * Functions for load and store data used in image2Features
+ * @author Maxime Portaz
+ */
+
 #ifndef DATASTORAGE_H
 #define DATASTORAGE_H
 
@@ -22,7 +27,7 @@ void loadVectorList(const char * filename, std::vector<std::vector< double> > & 
         fprintf(stderr, "On commence les choses serieuses\ni = %d\n", i);
         listVec[i].resize(vectorSize);
         fprintf(stderr, "On a resize le bidul\n");
-        for(int j = 0; j < vectorSize; i++){
+        for(int j = 0; j < vectorSize; j++){
             printf("On essaie maintenant de scanf\n");
             fscanf(f, "%lf", &listVec[i][j]);
             printf("Vector %d %d = %f", i, j, listVec[i][j]);

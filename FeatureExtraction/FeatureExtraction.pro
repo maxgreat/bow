@@ -8,7 +8,8 @@ TARGET = FeatureExtraction
 CONFIG   += console
 CONFIG   -= app_bundle
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    image2Features.cpp
 
 INCLUDEPATH += /usr/include/
 

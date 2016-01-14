@@ -1,8 +1,8 @@
 /**
-  * Image to Features
-  * Extract SIFT, ORB, or Akaze features from image, using opencv
-  * @author Maxime Portaz
-*/
+ * Image to Features
+ * Extract SIFT, ORB, or Akaze features from image, using opencv
+ * @author Maxime Portaz
+ */
 
 #ifndef IMAGE2FEATURES_H
 #define IMAGE2FEATURES_H

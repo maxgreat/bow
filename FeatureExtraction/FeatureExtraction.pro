@@ -18,4 +18,5 @@ QMAKE_LIBDIR += /usr/lib/x86_64-linux-gnu/
 
 HEADERS += \
     image2Features.h \
-    DataStorage.h
+    DataStorage.h \
+    drawing.h

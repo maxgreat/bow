@@ -15,6 +15,16 @@
 using namespace std;
 using namespace cv;
 
+
+/**
+ * @brief images2SIFT
+ * @param imagesNames input list of image
+ * @param ImagesKeypoints output list of keypoints list for each image
+ * @param ImagesDescriptors output list of descriptors for each image
+ */
+void images2SIFT(std::vector<string> imagesNames, std::vector<std::vector<cv::KeyPoint> > & imagesKeypoints, std::vector<cv::Mat> & imagesDescriptors);
+
+
 /**
  * @brief image2SIFTFeatures
  * @param im : the input image
@@ -24,5 +34,14 @@ using namespace cv;
  */
 int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> kp, cv::Mat & descriptors);
 
+
+
+/**
+ * @brief selectImages
+ * @param directory : directory where the images are
+ * @param nb_image : nb images to take
+ * @return list of images
+ */
+std::vector<std::string> selectImages(std::string directory, int nbImages=-1);
 
 #endif // IMAGE2FEATURES_H

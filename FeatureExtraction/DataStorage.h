@@ -10,6 +10,11 @@
 #include <drawing.h>
 #include <vector>
 
+#ifdef USE_OPENCV
+#include <opencv2/core/core.hpp>
+#include <descriptor.h>
+#endif
+
 /**
  * @brief loadVectorList
  * @param filename
@@ -26,5 +31,22 @@ int loadVectorList(const char * filename, std::vector<std::vector<double> > & li
  */
 int storeVectorList(const char* filename, std::vector<std::vector< double> > listVec);
 
+#ifdef USE_OPENCV
+/**
+ * @brief storeVectorList
+ * @param filename
+ * @param listVec
+ * @return 0 if storage ok, 1 otherwise
+ */
+int storeVectorList(const char* filename, std::vector<ImageDescriptors<double> > listVec);
+#endif
+
+/**
+ * @brief storeName
+ * @param filename
+ * @param nameList
+ * @return 0 if storage ok, 1 otherwise
+ */
+int storeName(const char* filename, std::vector<std::string > nameList);
 
 #endif // DATASTORAGE_H

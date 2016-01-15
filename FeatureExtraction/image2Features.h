@@ -15,6 +15,7 @@
 #include "drawing.h"
 #include <vector>
 #include <glob.h>
+#include "descriptor.h"
 
 using namespace std;
 using namespace cv;
@@ -26,7 +27,7 @@ using namespace cv;
  * @param ImagesKeypoints output list of keypoints list for each image
  * @param ImagesDescriptors output list of descriptors for each image
  */
-void images2SIFT(std::vector<string> imagesNames, std::vector<std::vector<cv::KeyPoint> > & imagesKeypoints, std::vector<cv::Mat> & imagesDescriptors);
+void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors<double> > & imagesDescriptors);
 
 
 /**
@@ -36,7 +37,7 @@ void images2SIFT(std::vector<string> imagesNames, std::vector<std::vector<cv::Ke
  * @param descriptors : output descriptors list (in cv::Mat)
  * @return nomber of descriptors
  */
-int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> kp, cv::Mat & descriptors);
+int image2SIFTFeatures(cv::Mat im, std::vector<KeyPoint> &kp, cv::Mat & descriptors);
 
 
 

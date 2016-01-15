@@ -23,7 +23,7 @@ int loadVectorList(const char * filename, std::vector<std::vector<double> > & li
         for(int j = 0; j < vectorSize; j++){
             fscanf(f, "%lf", &listVec[i][j]);
         }
-        loadBar(i, nbVector);
+        loadBar(++i, nbVector);
     }
     return 0;
 }
@@ -33,18 +33,66 @@ int storeVectorList(const char* filename, std::vector<std::vector< double> > lis
 
     if(f == NULL){
         fprintf(stderr, "Error openning file");
-        return -1;
+        return 1;
     }
-
+    int i = 0;
     fprintf(f, "%d %d\n", (int)listVec.size(), (int)listVec[0].size());
     for(std::vector<std::vector< double> >::iterator it = listVec.begin(); it != listVec.end();it++){
         for(vector<double>::iterator d = it->begin(); d!= it->end(); d++){
             fprintf(f,"%f ",*d);
         }
         fprintf(f,"\n");
+        loadBar(++i, listVec.size());
     }
 
 
     return 0;
 
 }
+
+#ifdef USE_OPENCV
+int storeVectorList(const char* filename, std::vector<ImageDescriptors<double> > listVec)
+{
+    FILE* f = fopen(filename, "w");
+
+    if(f == NULL)
+    {
+        fprintf(stderr, "Error openning file");
+        return 1;
+    }
+
+    fprintf(f, "%d %d\n", (int)listVec.size(), (int)listVec[0].descriptors.size());
+    for(size_t i = 0; i < listVec.size(); i++)
+    {
+        ImageDescriptors<double> id = listVec[i];
+        for(size_t j = 0; j < id.descriptors.size(); j++)
+        {
+            Descriptor<double> desc = id.descriptors[i];
+            for(int k = 0; k < desc.descriptorSize; k++)
+            {
+                fprintf(f,"%f ",desc.value[k]);
+            }
+        }
+        fprintf(f,"\n");
+        loadBar(i, listVec.size());
+    }
+
+
+    return 0;
+
+}
+#endif
+
+//TODO
+int storeName(const char* filename, std::vector<std::string > nameList){
+    FILE* f = fopen(filename, "w");
+
+    if(f == NULL){
+        fprintf(stderr, "Error openning file");
+        return 1;
+    }
+
+    return 0;
+
+}
+

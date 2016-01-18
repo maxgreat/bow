@@ -22,7 +22,7 @@
  * @param listVec
  * @return 0 if load ok, 1 otherwise
  */
-int loadVectorList(const char * filename, std::vector<std::vector<double> > & listVec);
+int loadVectorList(const std::string filename, std::vector<std::vector<double> > & listVec);
 
 /**
  * @brief storeVectorList
@@ -30,7 +30,7 @@ int loadVectorList(const char * filename, std::vector<std::vector<double> > & li
  * @param listVec
  * @return 0 if storage ok, 1 otherwise
  */
-int storeVectorList(const char* filename, std::vector<std::vector< double> > listVec);
+int storeVectorList(const std::string filename, const std::vector<std::vector<double> > & listVec);
 
 #ifdef USE_OPENCV
 /**
@@ -39,7 +39,7 @@ int storeVectorList(const char* filename, std::vector<std::vector< double> > lis
  * @param listVec
  * @return 0 if storage ok, 1 otherwise
  */
-int storeVectorList(const char* filename, std::vector<ImageDescriptors> listVec);
+int storeVectorList(const std::string filename, const std::vector<ImageDescriptors> & listVec);
 #endif
 
 /**
@@ -48,6 +48,14 @@ int storeVectorList(const char* filename, std::vector<ImageDescriptors> listVec)
  * @param nameList
  * @return 0 if storage ok, 1 otherwise
  */
-int storeName(const char* filename, std::vector<std::string > nameList);
+int storeName(const std::string filename, const std::vector<std::string> &nameList);
+
+/**
+ * @brief loadName
+ * @param filename
+ * @param nameList
+ * @return
+ */
+int loadName(const std::string filename, std::vector<std::string >& nameList);
 
 #endif // DATASTORAGE_H

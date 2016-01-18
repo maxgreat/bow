@@ -17,9 +17,11 @@
 class Descriptor
 {
 public:
-    Descriptor(int size = 128);
+    Descriptor(int size);
 
-    Descriptor(std::vector<double> vd, int size = 128);
+    Descriptor(std::vector<double> vd);
+
+    Descriptor(std::vector<double> vd, int size);
 
     int descriptorSize;
     std::vector<double> value;

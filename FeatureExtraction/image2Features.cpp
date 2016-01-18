@@ -5,24 +5,26 @@ using namespace cv;
 
 void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors> & imagesDescriptors){
     imagesDescriptors.resize(0);
-    int i = 0;
-    for(vector<string>::iterator it = imagesNames.begin(); it != imagesNames.end(); it++){
-        std::vector<cv::KeyPoint> kp;
-        cv::Mat desc;
-        image2SIFTFeatures(cv::imread(*it), kp, desc);
-        ImageDescriptors id(*it, descriptorMat2VectorList(desc), kp);
+    fprintf(stderr, "Image to SIFT\n");
+    for(int i = 0; i < imagesNames.size(); i++){
+        vector<KeyPoint> kp;
+        Mat desc;
+        Mat image = imread(imagesNames[i].c_str());
+        image2SIFTFeatures(image, kp, desc);
+        vector<vector<double> > vlist = descriptorMat2VectorList(desc);
+        ImageDescriptors id(imagesNames[i], vlist, kp);
         imagesDescriptors.push_back(id);
-        loadBar(++i, imagesNames.size());
+        loadBar(i, imagesNames.size());
     }
 }
 
 int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> & kp, cv::Mat & descriptors){
     //Detection of Keypoints
-    FeatureDetector* fd = FeatureDetector::create("SIFT");
+    Ptr<FeatureDetector> fd = FeatureDetector::create("ORB");
     fd->detect(im,kp);
 
     //Extraction of features
-    DescriptorExtractor* de = DescriptorExtractor::create("SIFT");
+    Ptr<DescriptorExtractor> de = DescriptorExtractor::create("ORB");
     de->compute(im,kp,descriptors);
 
     return kp.size();
@@ -30,17 +32,21 @@ int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> & kp, cv::Mat & des
 
 
 std::vector<std::string> selectImages(std::string directory, int nbImages /* =-1 */){
-    std::vector <string> imList;
+    vector <string> imList;
     glob_t globbuf;
-    glob(directory.c_str(), GLOB_DOOFFS, NULL, &globbuf);
-
+    fprintf(stderr, "GLOB\n");
+    glob(directory.c_str(), GLOB_TILDE, NULL, &globbuf);
+    if(globbuf.gl_pathc == 0){
+        fprintf(stderr, "No images corresponding to %s\n", directory.c_str());
+        return imList;
+    }
     if(nbImages == -1){
-        for(std::size_t i = 0; i < globbuf.gl_pathc; i++){
+        for(size_t i = 0; i < globbuf.gl_pathc; i++){
             imList.push_back(globbuf.gl_pathv[i]);
         }
     }
     else{
-        for(std::size_t i = 0; i < globbuf.gl_pathc && (int)i < nbImages; i++){
+        for(size_t i = 0; i < globbuf.gl_pathc && (int)i < nbImages; i++){
             imList.push_back(globbuf.gl_pathv[i]);
         }
     }

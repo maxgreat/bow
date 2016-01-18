@@ -2,16 +2,25 @@
 
 using namespace std;
 
-Descriptor::Descriptor(int size /* = 128 */)
+Descriptor::Descriptor(int size)
 {
     descriptorSize = size;
     value.resize(descriptorSize);
 }
 
-Descriptor::Descriptor(std::vector<double> vd, int size /* = 128 */)
+
+
+Descriptor::Descriptor(std::vector<double> vd)
+{
+    descriptorSize = vd.size();
+    value = vd;
+}
+
+
+Descriptor::Descriptor(std::vector<double> vd, int size)
 {
     descriptorSize = size;
-    if(vd.size() == 128){
+    if(vd.size() == size){
         value = vd;
     }
     else{

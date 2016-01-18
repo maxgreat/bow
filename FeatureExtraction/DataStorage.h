@@ -13,6 +13,7 @@
 #ifdef USE_OPENCV
 #include <opencv2/core/core.hpp>
 #include <descriptor.h>
+#include "imagedescriptors.h"
 #endif
 
 /**
@@ -38,7 +39,7 @@ int storeVectorList(const char* filename, std::vector<std::vector< double> > lis
  * @param listVec
  * @return 0 if storage ok, 1 otherwise
  */
-int storeVectorList(const char* filename, std::vector<ImageDescriptors<double> > listVec);
+int storeVectorList(const char* filename, std::vector<ImageDescriptors> listVec);
 #endif
 
 /**

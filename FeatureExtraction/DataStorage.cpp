@@ -51,7 +51,7 @@ int storeVectorList(const char* filename, std::vector<std::vector< double> > lis
 }
 
 #ifdef USE_OPENCV
-int storeVectorList(const char* filename, std::vector<ImageDescriptors<double> > listVec)
+int storeVectorList(const char* filename, std::vector<ImageDescriptors> listVec)
 {
     FILE* f = fopen(filename, "w");
 
@@ -64,10 +64,10 @@ int storeVectorList(const char* filename, std::vector<ImageDescriptors<double> >
     fprintf(f, "%d %d\n", (int)listVec.size(), (int)listVec[0].descriptors.size());
     for(size_t i = 0; i < listVec.size(); i++)
     {
-        ImageDescriptors<double> id = listVec[i];
+        ImageDescriptors id = listVec[i];
         for(size_t j = 0; j < id.descriptors.size(); j++)
         {
-            Descriptor<double> desc = id.descriptors[i];
+            Descriptor desc = id.descriptors[i];
             for(int k = 0; k < desc.descriptorSize; k++)
             {
                 fprintf(f,"%f ",desc.value[k]);

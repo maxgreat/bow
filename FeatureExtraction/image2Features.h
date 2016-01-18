@@ -12,10 +12,13 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
+#include <cstdio>
 #include "drawing.h"
 #include <vector>
 #include <glob.h>
 #include "descriptor.h"
+#include "imagedescriptors.h"
+#include "drawing.h"
 
 using namespace std;
 using namespace cv;
@@ -27,7 +30,7 @@ using namespace cv;
  * @param ImagesKeypoints output list of keypoints list for each image
  * @param ImagesDescriptors output list of descriptors for each image
  */
-void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors<double> > & imagesDescriptors);
+void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors> & imagesDescriptors);
 
 
 /**

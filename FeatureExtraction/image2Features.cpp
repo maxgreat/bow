@@ -1,22 +1,20 @@
-#include <image2Features.h>
-
+#include "image2Features.h"
 
 using namespace std;
 using namespace cv;
 
-
-void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors<double> > & imagesDescriptors){
+void images2SIFT(std::vector<string> imagesNames, std::vector<ImageDescriptors> & imagesDescriptors){
     imagesDescriptors.resize(0);
     int i = 0;
     for(vector<string>::iterator it = imagesNames.begin(); it != imagesNames.end(); it++){
         std::vector<cv::KeyPoint> kp;
         cv::Mat desc;
         image2SIFTFeatures(cv::imread(*it), kp, desc);
-        imagesDescriptors.push_back(ImageDescriptors<double>(*it, descriptorMat2VectorList(desc), kp));
+        ImageDescriptors id(*it, descriptorMat2VectorList(desc), kp);
+        imagesDescriptors.push_back(id);
         loadBar(++i, imagesNames.size());
     }
 }
-
 
 int image2SIFTFeatures(cv::Mat im, std::vector<cv::KeyPoint> & kp, cv::Mat & descriptors){
     //Detection of Keypoints
@@ -42,7 +40,7 @@ std::vector<std::string> selectImages(std::string directory, int nbImages /* =-1
         }
     }
     else{
-        for(std::size_t i = 0; i < globbuf.gl_pathc && i < nbImages; i++){
+        for(std::size_t i = 0; i < globbuf.gl_pathc && (int)i < nbImages; i++){
             imList.push_back(globbuf.gl_pathv[i]);
         }
     }

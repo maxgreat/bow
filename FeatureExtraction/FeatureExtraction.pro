@@ -4,14 +4,20 @@
 #
 #-------------------------------------------------
 
+QT += core gui
+QT += widgets
+
 TARGET = FeatureExtraction
-CONFIG   += console
-CONFIG   -= app_bundle
+TEMPLATE = app
+#CONFIG   += console
+#CONFIG   -= app_bundle
 
 SOURCES += main.cpp \
     image2Features.cpp \
     DataStorage.cpp \
-    descriptor.cpp
+    descriptor.cpp \
+    mainwindow.cpp \
+    imagedescriptors.cpp
 
 INCLUDEPATH += /usr/include/
 
@@ -25,7 +31,9 @@ QMAKE_LFLAGS_RELEASE -= -O1
 DEFINES += USE_OPENCV
 
 HEADERS += \
-    image2Features.h \
     DataStorage.h \
     drawing.h \
-    descriptor.h
+    descriptor.h \
+    image2Features.h \
+    mainwindow.h \
+    imagedescriptors.h

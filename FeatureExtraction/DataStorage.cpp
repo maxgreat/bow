@@ -30,6 +30,8 @@ int loadVectorList(const string filename, std::vector<std::vector<double> > & li
     return 0;
 }
 
+
+
 int storeVectorList(const string filename, const std::vector<std::vector< double> > & listVec){
     FILE* f = fopen(filename.c_str(), "w");
 
@@ -52,6 +54,7 @@ int storeVectorList(const string filename, const std::vector<std::vector< double
 
 }
 
+/*
 #ifdef USE_OPENCV
 int storeVectorList(const string filename, const std::vector<ImageDescriptors> & listVec)
 {
@@ -63,17 +66,14 @@ int storeVectorList(const string filename, const std::vector<ImageDescriptors> &
         return 1;
     }
 
-    fprintf(f, "%d %d\n", (int)listVec.size(), (int)listVec[0].descriptors.size());
-    //for (const auto &id : listVec)
-    for(size_t i = 0; i < listVec.size(); i++)
+    fprintf(f, "%d %d\n", (int)listVec.size(), (int)listVec[0].size());
+    for (const auto &id : listVec)
     {
-        const ImageDescriptors& id = listVec[i];
-        for(size_t j = 0; j < id.descriptors.size(); j++)
+        for(unsigned j = 0; j < id.size(); j++)
         {
-            const Descriptor& desc = id.descriptors[j];
-            for(int k = 0; k < desc.descriptorSize; k++)
+            for(unsigned k = 0; k < id[j].size(); k++)
             {
-                fprintf(f,"%lf",desc.value[k]);
+                fprintf(f,"%lf ",id[j][k]);
             }
         }
         fprintf(f,"\n");
@@ -85,6 +85,7 @@ int storeVectorList(const string filename, const std::vector<ImageDescriptors> &
 
 }
 #endif
+*/
 
 int storeName(const string filename,const std::vector<string> &nameList){
     FILE* f = fopen(filename.c_str(), "w");
@@ -111,7 +112,7 @@ int loadName(const string filename, std::vector<string> &nameList){
         fprintf(stderr, "Error openning file");
         return 1;
     }
-    int size;
+    unsigned int size;
     char name[1024];
     if(fscanf(f, "%d\n", &size) < 1)
         return 1;

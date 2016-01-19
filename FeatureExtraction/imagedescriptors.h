@@ -15,69 +15,54 @@ class ImageDescriptors
 public:
     ImageDescriptors() {}
 
-    ImageDescriptors(const std::string name, std::vector<Descriptor > desc, std::vector<cv::KeyPoint> kp = std::vector<cv::KeyPoint>())
+    ImageDescriptors(const std::string name, std::vector<Descriptor > desc)
     {
         imageName = name;
         descriptors = desc;
-        keyPoints = kp;
     }
 
 
-    ImageDescriptors(const std::string name, std::vector<std::vector<double> > desc, std::vector<cv::KeyPoint> kp = std::vector<cv::KeyPoint>())
+    ImageDescriptors(const std::string name, std::vector<std::vector<double> > desc, std::vector<cv::KeyPoint> kp)
     {
         imageName = name;
         for(size_t i = 0; i < desc.size(); i++)
         {
-                descriptors.push_back(Descriptor(desc[i]));
-                keyPoints.push_back(kp[i]);
+                descriptors.push_back(Descriptor(desc[i], kp[i]));
         }
     }
 
-    /**
-     * @brief addDescriptor
-     * @param d
-     * @param kp
-     * @param size
-     */
-    void addDescriptor(Descriptor d, cv::KeyPoint kp);
+    ImageDescriptors(const std::string name, cv::Mat desc, std::vector<cv::KeyPoint> kp)
+    {
+        imageName = name;
+        for(int i = 0; i < desc.rows; i++){
+            vector<double> v;
+            for(int j = 0; j < desc.cols; j++){
+                v.push_back(desc.at<double>(i,j));
+            }
+            descriptors.push_back(Descriptor(v, kp[i]));
+        }
+    }
 
-    /**
-     * @brief addDescriptor
-     * @param desc
-     * @param kp
-     */
-    void addDescriptor(std::vector<double> desc, cv::KeyPoint kp);
+    void addDescriptor(Descriptor d);
 
-    /**
-     * @brief addDescriptor
-     * @param vv
-     */
-    void addDescriptor(std::vector<std::vector<double> > vv, int size = 128);
+    void addDescriptor(std::vector<Descriptor>& descList);
 
-    /**
-     * @brief addDescriptor
-     * @param vv
-     */
-    void addDescriptor(std::vector<Descriptor> vv);
+    std::string& name() { return imageName; }
 
-    /**
-     * @brief addDescriptor
-     * @param descList
-     * @param keyPointList
-     */
-    void addDescriptor(std::vector<std::vector<double> > descList, std::vector<cv::KeyPoint> keyPointList);
+    Descriptor& operator[](unsigned i)
+    {
+        if(i >= descriptors.size())
+            throw std::range_error("Too large access");
+        else
+           return descriptors[i];
+    }
 
-    /**
-     * @brief addDescriptor
-     * @param descList
-     * @param keyPointList
-     */
-    void addDescriptor(std::vector<Descriptor> descList, std::vector<cv::KeyPoint> keyPointList);
+    unsigned size() { return descriptors.size(); }
 
 
+private:
     std::vector<Descriptor> descriptors;
     std::string imageName;
-    std::vector<cv::KeyPoint> keyPoints;
 };
 
 #endif // IMAGEDESCRIPTORS_H

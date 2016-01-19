@@ -32,15 +32,11 @@ int loadVectorList(const std::string filename, std::vector<std::vector<double> >
  */
 int storeVectorList(const std::string filename, const std::vector<std::vector<double> > & listVec);
 
+/*
 #ifdef USE_OPENCV
-/**
- * @brief storeVectorList
- * @param filename
- * @param listVec
- * @return 0 if storage ok, 1 otherwise
- */
 int storeVectorList(const std::string filename, const std::vector<ImageDescriptors> & listVec);
 #endif
+*/
 
 /**
  * @brief storeName

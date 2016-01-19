@@ -4,27 +4,27 @@ using namespace std;
 
 Descriptor::Descriptor(int size)
 {
-    descriptorSize = size;
-    value.resize(descriptorSize);
+    value.resize(size);
 }
 
-
-
-Descriptor::Descriptor(std::vector<double> vd)
+Descriptor::Descriptor(std::vector<double> vd, cv::KeyPoint kp)
 {
-    descriptorSize = vd.size();
-    value = vd;
-}
-
-
-Descriptor::Descriptor(std::vector<double> vd, int size)
-{
-    descriptorSize = size;
-    if(vd.size() == size){
+    if(vd.size() > 0)
+    {
+        keyPoint = kp;
         value = vd;
     }
-    else{
-        fprintf(stderr, "Error vector size\n");
-        value.resize(descriptorSize);
-    }
+}
+
+/*************************************************************
+ *
+ * Operators
+ *
+ * ************************************************************/
+double& Descriptor::operator[](const unsigned i)
+{
+    if(i >= value.size())
+        throw std::range_error("Out of range");
+    else
+        return value[i];
 }

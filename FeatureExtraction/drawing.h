@@ -10,6 +10,10 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <opencv2/core/core.hpp>
+#include <opencv2/features2d/features2d.hpp>
+
+using namespace cv;
 
 /**
  * @brief loadBar
@@ -21,6 +25,7 @@
  */
 static inline void loadBar(unsigned int x, unsigned int n,unsigned int w = 50)
 {
+    x++;
     if ( (x != n) && (x % (n/100+1) != 0) ) return;
 
     float ratio  =  x/(float)n;
@@ -35,5 +40,27 @@ static inline void loadBar(unsigned int x, unsigned int n,unsigned int w = 50)
         std::cout << "]\n" << std::flush;
 }
 
+inline
+void printKeyPoint(std::ostream& os, const cv::KeyPoint kp)
+{
+    os << kp.pt.x << '\n';
+    os << kp.pt.y << '\n';
+    os << kp.size << '\n';
+    os << kp.angle << '\n';
+    os << kp.response << '\n';
+    os << kp.octave << '\n';
+    os << kp.class_id;
+}
+
+inline
+cv::KeyPoint readKeyPoint(std::istream& is)
+{
+    cv::Point2f pt;
+    float angle, size, response;
+    int class_id, octave;
+    is >> pt.x >> pt.y;
+    is >> size >> angle >> response >> octave >> class_id;
+    return cv::KeyPoint(pt,size,angle,response,octave,class_id);
+}
 
 #endif // DRAWING_H

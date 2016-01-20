@@ -1,6 +1,9 @@
 /**
  * @author Maxime Portaz
  */
+#ifndef DATASTORAGE_C
+#define DATASTORAGE_C
+
 #include "DataStorage.h"
 
 using namespace std;
@@ -128,3 +131,8 @@ int loadName(const string filename, std::vector<string> &nameList){
 
 }
 
+
+
+
+
+#endif

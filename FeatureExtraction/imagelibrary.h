@@ -4,13 +4,10 @@
 #include <vector>
 #include <glob.h>
 #include "imagedescriptors.h"
-#include "descriptor.h"
 #include "drawing.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
-
-enum desc_type {orb}; /* TODO : add other descriptors */
 
 
 class imageLibrary
@@ -36,12 +33,12 @@ public:
     {
         os << lib.imageList.size() << '\n';
         os << lib.descriptorType << '\n';
-        for(const auto& im : imageList)
+        for(const auto& im : lib.imageList)
             os << im << '\n';
         return os;
     }
 
-    friend std::istream& operator<<(std::istream& is, imageLibrary& lib)
+    friend std::istream& operator>>(std::istream& is, imageLibrary& lib)
     {
         unsigned size;
         is >> size;
@@ -50,7 +47,7 @@ public:
         {
             ImageDescriptors a;
             is >> a;
-            imageList.push_back(a);
+            lib.imageList.push_back(a);
         }
         return is;
     }

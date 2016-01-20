@@ -12,8 +12,6 @@
 
 #ifdef USE_OPENCV
 #include <opencv2/core/core.hpp>
-#include <descriptor.h>
-#include "imagedescriptors.h"
 #endif
 
 /**

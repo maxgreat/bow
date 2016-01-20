@@ -11,6 +11,12 @@
 #include "drawing.h"
 
 
+enum class desc_type {orb}; /* TODO : add other descriptors */
+
+std::istream& operator>>(std::istream& is, desc_type& value);
+
+std::ostream& operator<<(std::ostream& os, const desc_type value);
+
 /**
  * Class Descriptor - represent a list of <double> with the keypoint associated
  */
@@ -38,7 +44,7 @@ public:
         return os;
     }
 
-    friend std::istream& operator<<(std::istream& is, Descriptor& d)
+    friend std::istream& operator>>(std::istream& is, Descriptor& d)
     {
         unsigned size;
         is >> size;

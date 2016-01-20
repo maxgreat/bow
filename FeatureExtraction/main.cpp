@@ -1,11 +1,7 @@
 //#include <QApplication>
-#include <cstdio>
-#include "DataStorage.h"
-#include "descriptor.h"
 #include <iostream>
 #include <vector>
 //#include "mainwindow.h"
-#include "imagedescriptors.h"
 #include "imagelibrary.h"
 
 static string COLLECTION_DIR = "/media/portaz/17E771D5010CDC52/CLICIDEMAX/";
@@ -29,13 +25,6 @@ int main(/* int argc, char* argv[] */)
     cout << "Save Descriptors\n";
     storeVectorList(WORKING_DIR+"SIFTVectorsCPP", imagesDescriptors);
   */
-    vector<string> imageList;
-    loadName(WORKING_DIR+"ImageNameList", imageList);
-    cout << "Name list size :" << imageList.size();
-    vector<vector<double> > imagesDescriptors;
-    cout << "Load vector\n";
-    loadVectorList(WORKING_DIR+"SIFTVectorsCPP",imagesDescriptors);
-    cout << "Vector size : " << imagesDescriptors.size() << endl;
     char a;
     cin >> a;
     while(a != 'q')

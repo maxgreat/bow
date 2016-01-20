@@ -7,7 +7,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include "descriptor.h"
-#include "imagedescriptors.h"
 
 
 class ImageDescriptors
@@ -58,6 +57,30 @@ public:
     }
 
     unsigned size() { return descriptors.size(); }
+
+
+    friend std::ostream& operator<<(std::ostream& os, const ImageDescriptors& id)
+    {
+        os << id.imageName << '\n';
+        os << id.descriptors.size() << '\n';
+        for(const auto& desc : id.descriptors)
+            os << desc << '\n';
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, ImageDescriptors& id)
+    {
+        unsigned size;
+        is >> id.imageName;
+        is >> size;
+        for(unsigned i = 0; i < size; i++)
+        {
+            Descriptor a;
+            is >> a;
+            id.descriptors.push_back(a);
+        }
+        return is;
+    }
 
 
 private:

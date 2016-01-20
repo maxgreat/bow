@@ -1,3 +1,6 @@
+#ifndef IMAGELIBRARY_C
+#define IMAGELIBRARY_C
+
 #include "imagelibrary.h"
 
 using namespace std;
@@ -48,7 +51,7 @@ void imageLibrary::addImages(const std::vector<string>& imNameList)
     vector<vector<KeyPoint> > lkp;
     vector<Mat> ldesc;
     fprintf(stderr,"Add image list\n");
-    if(descriptorType == orb){
+    if(descriptorType == desc_type::orb){
         fprintf(stderr, "Detect keypoints\n");
         Ptr<FeatureDetector> fd = FeatureDetector::create("ORB");
         fd->detect(l,lkp);
@@ -77,7 +80,7 @@ void imageLibrary::addImage(ImageDescriptors& im)
 
 void imageLibrary::addImage(const std::string& im)
 {
-    if(descriptorType == orb)
+    if(descriptorType == desc_type::orb)
     {
         cv::Mat image = imread(im);
         std::vector<cv::KeyPoint> kp;
@@ -97,4 +100,5 @@ void imageLibrary::addImage(const std::string& im)
 }
 
 
+#endif
 

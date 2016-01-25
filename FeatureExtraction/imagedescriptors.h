@@ -8,6 +8,7 @@
 #include <opencv2/features2d/features2d.hpp>
 #include "descriptor.h"
 
+using namespace std;
 
 class ImageDescriptors
 {

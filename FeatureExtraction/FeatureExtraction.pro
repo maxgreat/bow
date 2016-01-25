@@ -21,6 +21,9 @@ SOURCES += main.cpp \
 
 INCLUDEPATH += /usr/include/
 
+QMAKE_CC = gcc-5
+QMAKE_CXX = g++-5
+
 QMAKE_LIBS += `pkg-config opencv --libs`
 QMAKE_LIBDIR += /usr/lib/x86_64-linux-gnu/
 

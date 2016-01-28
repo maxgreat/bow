@@ -16,7 +16,7 @@ def image2BOW(centroid, descriptors):
 
 if __name__ == "__main__":
 	print('Load library')
-	lib = imageLibrary.Library("SIFT")
+	lib = Library("SIFT")
 	lib.loadLibrary("SIFTSaved")
 	print('Load ok\nextract vector')
 	vec = lib.extractVector(10)
@@ -25,4 +25,4 @@ if __name__ == "__main__":
 	import pickle
 	print('Save cluster')
 	pickle.dump(centroid, open("Centroid_SIFT_1000_10", "wb"))
-	print("BOW of ", lib.images[0][0], " is", image2BOW(centroid, lib.images[0][1][1]) 
+	print("BOW of ", lib.images[0][0], " is", image2BOW(centroid, lib.images[0][1][1]))

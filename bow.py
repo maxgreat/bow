@@ -1,14 +1,9 @@
 from imageLibrary import *
 import scipy.spatial as sp
+from createCluster import createCluster
 
 HOME='../'
 COL_DIR=HOME+'Collection/CLICIDEMAX/'
-
-def clusterVector(veclist, nbcluster):
-	from sklearn.cluster import KMeans
-	kmeans = KMeans(init='k-means++', n_clusters=nbcluster, max_iter=20, precompute_distances=True, n_jobs=3)
-	kmeans.fit(veclist)
-	return kmeans.cluster_centers_
 
 def ClosestCluster(d, centers):
 	return centers.index(min(centers, lambda x: sp.distance.euclidean(d, x)))
@@ -20,8 +15,14 @@ def image2BOW(centroid, descriptors):
 	return bow
 
 if __name__ == "__main__":
+	print('Load library')
 	lib = imageLibrary.Library("SIFT")
 	lib.loadLibrary("SIFTSaved")
+	print('Load ok\nextract vector')
 	vec = lib.extractVector(10)
-	
-	
+	print('Create cluster')
+	centroid = createCluster(vec, 1000)
+	import pickle
+	print('Save cluster')
+	pickle.dump(centroid, open("Centroid_SIFT_1000_10", "wb"))
+	print("BOW of ", lib.images[0][0], " is", image2BOW(centroid, lib.images[0][1][1]) 

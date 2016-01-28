@@ -16,12 +16,5 @@ if __name__=="__main__":
 	nbcluster = 2000 if len(sys.argv) == 3 else int(sys.argv[3])
 	nbjob = 3 if len(sys.argv) <= 4 else int(sys.argv[4])
 	with open(sys.argv[2],'w') as f:
-		pickle.dump(createCluster(
-						pickle.load(
-							open(sys.argv[1], 'rb')
-							),
-						nbcluster,
-						nbjob
-						)
-					)
+		pickle.dump(createCluster(pickle.load(open(sys.argv[1], 'rb')), nbcluster, nbjob), f)
 	

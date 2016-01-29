@@ -1,31 +1,21 @@
 import glob
 import random
 import numpy as np
-import cv2
+import cv2 #TODO remove it from here, in order to load openCV only when needed
 import time
+from simpleDrawing import loadBar
+
 if int(cv2.__version__.split('.')[0]) != 3:
 	print("Error, OpenCV 3 needed")
 	raise Exception("OpenCV 3 needed")
 
-def loadBar(x, xmax, width=50):
-	x+=1
-	if (x != xmax) and (x % (xmax/100+1) != 0):
-		return
-
-	ratio  =  x/float(xmax)
-	c =  int(ratio * width)
-	print('\r',int(ratio*100),"[", end="")
-	for i in range(c):
-		print("=", end="")
-	for i in range(c,width):
-		print(' ', end='')
-		
-	if x != xmax:
-		print(']',end="",flush=True)
-	else:
-		print(']',end='\n',flush=True)
-
-
+class KeyPoint:
+	"""
+		My own keypoint class, to avoid the openCV dependancy here
+	"""
+	#TODO
+	def __init__(self):
+		pass
 
 def select_image(roomlist, directory, nb_image=-1):
 	"""

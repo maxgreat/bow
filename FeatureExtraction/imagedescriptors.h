@@ -6,50 +6,62 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include "descriptor.h"
 
 using namespace std;
 
+template<typename DescType>
 class ImageDescriptors
 {
 public:
     ImageDescriptors() {}
 
-    ImageDescriptors(const std::string name, std::vector<Descriptor > desc)
+    ImageDescriptors(const std::string name, desc_type d=desc_type::orb)
     {
+        cerr << "Create Image Descriptor with image " << name << '\n';
         imageName = name;
-        descriptors = desc;
-    }
-
-
-    ImageDescriptors(const std::string name, std::vector<std::vector<double> > desc, std::vector<cv::KeyPoint> kp)
-    {
-        imageName = name;
-        for(size_t i = 0; i < desc.size(); i++)
+        image = cv::imread(name);
+        vector<KeyPoint> lkp;
+        Mat ldesc;
+        if(d == desc_type::orb)
         {
-                descriptors.push_back(Descriptor(desc[i], kp[i]));
+            cerr << "Compute orb\n";
+            descriptorType = d;
+            Ptr<ORB> o = cv::ORB::create();
+            o->detectAndCompute(image,noArray(),lkp,ldesc);
         }
-    }
-
-    ImageDescriptors(const std::string name, cv::Mat desc, std::vector<cv::KeyPoint> kp)
-    {
-        imageName = name;
-        for(int i = 0; i < desc.rows; i++){
-            vector<double> v;
-            for(int j = 0; j < desc.cols; j++){
-                v.push_back(desc.at<double>(i,j));
+        else
+        {
+            cerr << "Descriptor unknown\n";
+        }
+        if(ldesc.elemSize() == sizeof(DescType))
+        {
+            for(int i = 0; i < ldesc.rows; i++){
+                vector<DescType> v;
+                for(int j = 0; j < ldesc.cols; j++){
+                    v.push_back(ldesc.at<DescType>(i,j));
+                }
+                descriptors.push_back(Descriptor<DescType>(v, lkp[i]));
             }
-            descriptors.push_back(Descriptor(v, kp[i]));
         }
+        else
+        {
+            fprintf(stderr, "Error, descriptor size unkown : %d\n", (int)ldesc.elemSize());
+            exit(-1);
+        }
+
     }
 
-    void addDescriptor(Descriptor d);
 
-    void addDescriptor(std::vector<Descriptor>& descList);
+
+    //
+    // Getter / Setter
+    //
 
     std::string& name() { return imageName; }
 
-    Descriptor& operator[](unsigned i)
+    Descriptor<DescType>& operator[](unsigned i)
     {
         if(i >= descriptors.size())
             throw std::range_error("Too large access");
@@ -60,12 +72,16 @@ public:
     unsigned size() { return descriptors.size(); }
 
 
+    //
+    // Printer
+    //
+
     friend std::ostream& operator<<(std::ostream& os, const ImageDescriptors& id)
     {
         os << id.imageName << '\n';
         os << id.descriptors.size() << '\n';
         for(const auto& desc : id.descriptors)
-            os << desc << '\n';
+            os << '\t' << desc << '\n';
         return os;
     }
 
@@ -76,7 +92,7 @@ public:
         is >> size;
         for(unsigned i = 0; i < size; i++)
         {
-            Descriptor a;
+            Descriptor<DescType> a;
             is >> a;
             id.descriptors.push_back(a);
         }
@@ -85,8 +101,10 @@ public:
 
 
 private:
-    std::vector<Descriptor> descriptors;
+    std::vector<Descriptor<DescType> > descriptors;
     std::string imageName;
+    cv::Mat image;
+    desc_type descriptorType;
 };
 
 #endif // IMAGEDESCRIPTORS_H

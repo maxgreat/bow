@@ -20,15 +20,35 @@ std::ostream& operator<<(std::ostream& os, const desc_type value);
 /**
  * Class Descriptor - represent a list of <double> with the keypoint associated
  */
+template<typename DescSize>
 class Descriptor
 {
 public:
     Descriptor() {}
-    Descriptor(int size);
 
-    Descriptor(std::vector<double> vd, cv::KeyPoint kp);
 
-    double& operator[](const unsigned i);
+    Descriptor(int size)
+    {
+        value.resize(size);
+    }
+
+
+    Descriptor(std::vector<DescSize> vd, cv::KeyPoint kp = cv::KeyPoint())
+    {
+        if(vd.size() > 0)
+        {
+            keyPoint = kp;
+            value = vd;
+        }
+    }
+
+    DescSize& operator[](const unsigned i)
+    {
+        if(i >= value.size())
+            throw std::range_error("Out of range");
+        else
+            return value[i];
+    }
 
     cv::KeyPoint& getKeyPoint() { return keyPoint; }
 
@@ -40,7 +60,7 @@ public:
         printKeyPoint(os,d.keyPoint);
         os << '\n';
         for(const auto& val : d.value)
-            os << val << '\n';
+            os << (double)val << "   ";
         return os;
     }
 
@@ -53,7 +73,7 @@ public:
         {
             double a;
             is >> a;
-            d.value.push_back(a);
+            d.value.push_back((DescSize)a);
         }
         return is;
     }
@@ -62,7 +82,7 @@ public:
     unsigned size(){ return value.size(); }
 
 private:
-    std::vector<double> value;
+    std::vector<DescSize> value;
     cv::KeyPoint keyPoint;
 };
 

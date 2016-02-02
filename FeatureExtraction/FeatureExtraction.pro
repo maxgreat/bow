@@ -26,6 +26,7 @@ QMAKE_CXX = g++-5
 
 QMAKE_LIBS += `pkg-config opencv --libs`
 QMAKE_LIBDIR += /usr/lib/x86_64-linux-gnu/
+QMAKE_LIBDIR += -L/usr/local/lib
 
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Werror
 

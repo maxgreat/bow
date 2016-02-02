@@ -48,7 +48,7 @@ class ImageDictionary:
 		
 	def top5Closest(self, bow):
 		closest=sorted([(n, sp.distance.cosine(bow,b)) for (n,b) in self.images], key=lambda x:x[1])
-		return closest
+		return closest[0:5]
 	
 	def __str__(self):
 		s = ''

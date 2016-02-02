@@ -26,7 +26,7 @@ def select_image(roomlist, directory, nb_image=-1):
 	print("Directory ="+directory)
 	l = []
 	for r in roomlist: #read all image in the given rooms
-		for x in glob.glob(directory+r+'[A-Z]-*.JPG'):
+		for x in glob.glob(directory+str(r)+'[A-Z]-*.JPG'):
 			l.append(x)
 	imageList = []
 	if nb_image == -1:
@@ -60,7 +60,12 @@ class Library:
 			import cv2
 			self.extractor = cv2.ORB_create()
 		
+	def __getitem__(self, i):
+		return self.images[i]
 		
+	def __len__(self):
+		return self.nbImage
+	
 	def addDirectory(directory, nbimage=-1):
 		self.imlist = select_image([str(x) for x in range(1, 45)], directory, nbimage)
 		self.nbImage = len(self.imlist)

@@ -19,16 +19,20 @@ public:
 
     ImageDescriptors(const std::string name, desc_type d=desc_type::orb)
     {
-        cerr << "Create Image Descriptor with image " << name << '\n';
         imageName = name;
         image = cv::imread(name);
         vector<KeyPoint> lkp;
         Mat ldesc;
         if(d == desc_type::orb)
         {
-            cerr << "Compute orb\n";
             descriptorType = d;
             Ptr<ORB> o = cv::ORB::create();
+            o->detectAndCompute(image,noArray(),lkp,ldesc);
+        }
+        else if(d == desc_type::akaze)
+        {
+            descriptorType = d;
+            Ptr<AKAZE> o = cv::AKAZE::create();
             o->detectAndCompute(image,noArray(),lkp,ldesc);
         }
         else
@@ -47,8 +51,7 @@ public:
         }
         else
         {
-            fprintf(stderr, "Error, descriptor size unkown : %d\n", (int)ldesc.elemSize());
-            exit(-1);
+            cerr << "Erreur in image : " << imageName << endl;
         }
 
     }

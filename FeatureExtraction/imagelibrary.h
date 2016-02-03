@@ -30,6 +30,16 @@ public:
      */
     void addImage(const std::string& im);
 
+
+    ImageDescriptors<DescType>& operator[](unsigned i)
+    {
+        if(i >= imageList.size())
+            throw std::range_error("Too large access");
+        else
+           return imageList[i];
+    }
+
+
     friend std::ostream& operator<<(std::ostream& os, const imageLibrary& lib)
     {
         os << lib.imageList.size() << '\n';
@@ -76,7 +86,6 @@ imageLibrary<T>::imageLibrary(desc_type dt, const std::string directory, int nbI
         fprintf(stderr, "No images corresponding to %s\n", directory.c_str());
         return;
     }
-    fprintf(stderr, "Add images names from directory\n");
     if(nbImages == -1){
         for(size_t i = 0; i < globbuf.gl_pathc; i++){
             imList.push_back(globbuf.gl_pathv[i]);
@@ -102,7 +111,7 @@ void imageLibrary<T>::addImages(const std::vector<string>& imNameList)
     for(const auto &image:imNameList)
     {
         addImage(image);
-        loadBar(++i, imNameList.size());
+        loadBar(i++, imNameList.size());
     }
 }
 

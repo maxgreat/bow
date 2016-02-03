@@ -11,7 +11,7 @@
 #include "drawing.h"
 
 
-enum class desc_type {orb}; /* TODO : add other descriptors */
+enum class desc_type {orb, akaze}; /* TODO : add other descriptors */
 
 std::istream& operator>>(std::istream& is, desc_type& value);
 

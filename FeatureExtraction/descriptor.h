@@ -24,15 +24,25 @@ template<typename DescSize>
 class Descriptor
 {
 public:
+    /**
+     * @brief Descriptor
+     */
     Descriptor() {}
 
-
+    /**
+     * @brief Descriptor
+     * @param size
+     */
     Descriptor(int size)
     {
         value.resize(size);
     }
 
-
+    /**
+     * @brief Descriptor
+     * @param vd
+     * @param kp
+     */
     Descriptor(std::vector<DescSize> vd, cv::KeyPoint kp = cv::KeyPoint())
     {
         if(vd.size() > 0)
@@ -42,6 +52,11 @@ public:
         }
     }
 
+    /**
+     * @brief operator []
+     * @param i
+     * @return
+     */
     DescSize& operator[](const unsigned i)
     {
         if(i >= value.size())
@@ -50,8 +65,28 @@ public:
             return value[i];
     }
 
+    /**
+     * @brief getValue
+     * @return
+     */
+    std::vector<DescSize>& getValue() { return value; }
+
+    /**
+     * @brief getKeyPoint
+     * @return
+     */
     cv::KeyPoint& getKeyPoint() { return keyPoint; }
 
+    /**
+     * @brief size
+     */
+    unsigned size(){ return value.size(); }
+
+
+
+    //
+    // Printer
+    //
     friend std::ostream& operator<<(std::ostream& os, const Descriptor& d)
     {
         if(d.value.size() == 0)
@@ -79,7 +114,6 @@ public:
     }
 
 
-    unsigned size(){ return value.size(); }
 
 private:
     std::vector<DescSize> value;

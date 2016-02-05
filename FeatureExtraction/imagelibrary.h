@@ -13,8 +13,18 @@ template<typename DescType>
 class imageLibrary
 {
 public:
+    /**
+     * @brief imageLibrary
+     * @param dt
+     */
     imageLibrary(desc_type dt) { descriptorType = dt; }
 
+    /**
+     * @brief imageLibrary
+     * @param dt
+     * @param directory
+     * @param nbimage
+     */
     imageLibrary(desc_type dt, const std::string directory, int nbimage = -1);
 
     /**
@@ -30,7 +40,11 @@ public:
      */
     void addImage(const std::string& im);
 
-
+    /**
+     * @brief operator []
+     * @param i
+     * @return
+     */
     ImageDescriptors<DescType>& operator[](unsigned i)
     {
         if(i >= imageList.size())
@@ -39,7 +53,28 @@ public:
            return imageList[i];
     }
 
+    /**
+     * @brief size
+     * @return
+     */
+    size_t size(){ return imageList.size(); }
 
+    /**
+     * @brief getDescriptors
+     * @param i
+     * @return
+     */
+    std::vector<DescType> getDescriptors(int i)
+    {
+        return imageList[i].getDescriptors();
+    }
+
+    /**
+     * @brief operator <<
+     * @param os
+     * @param lib
+     * @return
+     */
     friend std::ostream& operator<<(std::ostream& os, const imageLibrary& lib)
     {
         os << lib.imageList.size() << '\n';
@@ -49,6 +84,12 @@ public:
         return os;
     }
 
+    /**
+     * @brief operator >>
+     * @param is
+     * @param lib
+     * @return
+     */
     friend std::istream& operator>>(std::istream& is, imageLibrary& lib)
     {
         unsigned size;

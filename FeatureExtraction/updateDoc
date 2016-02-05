@@ -1,0 +1,5 @@
+#!/bin/bash
+doxygen -u
+doxygen
+doxygen -w html headerFile footerFile styleSheetFile
+

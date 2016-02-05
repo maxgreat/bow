@@ -15,25 +15,32 @@ template<typename DescType>
 class ImageDescriptors
 {
 public:
+    /**
+     * @brief ImageDescriptors
+     */
     ImageDescriptors() {}
 
+    /**
+     * @brief ImageDescriptors
+     * @param name of the image
+     * @param descriptor Type
+     */
     ImageDescriptors(const std::string name, desc_type d=desc_type::orb)
     {
         imageName = name;
         image = cv::imread(name);
         vector<KeyPoint> lkp;
-        Mat ldesc;
         if(d == desc_type::orb)
         {
             descriptorType = d;
             Ptr<ORB> o = cv::ORB::create();
-            o->detectAndCompute(image,noArray(),lkp,ldesc);
+            o->detectAndCompute(image,noArray(),lkp,opencvDescriptors);
         }
         else if(d == desc_type::akaze)
         {
             descriptorType = d;
             Ptr<AKAZE> o = cv::AKAZE::create();
-            o->detectAndCompute(image,noArray(),lkp,ldesc);
+            o->detectAndCompute(image,noArray(),lkp,opencvDescriptors);
         }
         else
         {
@@ -41,10 +48,10 @@ public:
         }
         if(ldesc.elemSize() == sizeof(DescType))
         {
-            for(int i = 0; i < ldesc.rows; i++){
+            for(int i = 0; i < opencvDescriptors.rows; i++){
                 vector<DescType> v;
-                for(int j = 0; j < ldesc.cols; j++){
-                    v.push_back(ldesc.at<DescType>(i,j));
+                for(int j = 0; j < opencvDescriptors.cols; j++){
+                    v.push_back(opencvDescriptors.at<DescType>(i,j));
                 }
                 descriptors.push_back(Descriptor<DescType>(v, lkp[i]));
             }
@@ -56,14 +63,21 @@ public:
 
     }
 
-
-
     //
     // Getter / Setter
     //
 
+    /**
+     * @brief name
+     * @return the name of the image
+     */
     std::string& name() { return imageName; }
 
+    /**
+     * @brief operator []
+     * @param i
+     * @return the i-th Descritor
+     */
     Descriptor<DescType>& operator[](unsigned i)
     {
         if(i >= descriptors.size())
@@ -72,13 +86,37 @@ public:
            return descriptors[i];
     }
 
-    unsigned size() { return descriptors.size(); }
+    /**
+     * @brief size
+     * @param i
+     * @return
+     */
+    size_t size(int i)
+    {
+        return descriptors.size();
+    }
+
+
+
+    /**
+     * @brief getDescritors
+     * @param i
+     * @return the i-th in the form of a vector of vector
+     */
+    std::vector<std::vector<DescType> >& getDescritors(unsigned i)
+    {
+        std::vector<std::vector<DescType> > ldesc;
+        for(size_t j= 0; j < descriptors.size(); j++)
+        {
+            ldesc.push_back(descriptors[i].getValue());
+        }
+        return ldesc;
+    }
 
 
     //
     // Printer
     //
-
     friend std::ostream& operator<<(std::ostream& os, const ImageDescriptors& id)
     {
         os << id.imageName << '\n';
@@ -106,6 +144,7 @@ public:
 private:
     std::vector<Descriptor<DescType> > descriptors;
     std::string imageName;
+    cv::Mat opencvDescriptors;
     cv::Mat image;
     desc_type descriptorType;
 };

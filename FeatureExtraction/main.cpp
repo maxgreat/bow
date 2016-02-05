@@ -27,7 +27,10 @@ int main(/* int argc, char* argv[] */)
     loadFile.close();
 
 
+//    BFMatcher matcher(NORM_HAMMING);
+//    matcher.knnMatch(desc1, desc2, nn_matches, 2);
 
+//    for(int i = 0 ; i < imLib.
 
     return 0;
 }

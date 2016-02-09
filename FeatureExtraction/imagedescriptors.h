@@ -46,7 +46,7 @@ public:
         {
             cerr << "Descriptor unknown\n";
         }
-        if(ldesc.elemSize() == sizeof(DescType))
+        if(opencvDescriptors.elemSize() == sizeof(DescType))
         {
             for(int i = 0; i < opencvDescriptors.rows; i++){
                 vector<DescType> v;
@@ -97,6 +97,10 @@ public:
     }
 
 
+    cv::Mat& getOpenCVDescriptors()
+    {
+        return opencvDescriptors;
+    }
 
     /**
      * @brief getDescritors

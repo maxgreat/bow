@@ -53,6 +53,17 @@ public:
     }
 
     /**
+     * @brief Descriptor
+     * @param desc
+     * @param kp
+     */
+    Descriptor(cv::Mat desc, cv::KeyPoint kp = cv::KeyPoint() )
+    {
+
+    }
+
+
+    /**
      * @brief operator []
      * @param i
      * @return

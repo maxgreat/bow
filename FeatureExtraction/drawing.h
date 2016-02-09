@@ -40,6 +40,11 @@ static inline void loadBar(unsigned int x, unsigned int n,unsigned int w = 50)
         std::cout << "]\n" << std::flush;
 }
 
+/**
+ * @brief printKeyPoint
+ * @param os
+ * @param kp
+ */
 inline
 void printKeyPoint(std::ostream& os, const cv::KeyPoint kp)
 {
@@ -52,6 +57,11 @@ void printKeyPoint(std::ostream& os, const cv::KeyPoint kp)
     os << kp.class_id;
 }
 
+/**
+ * @brief readKeyPoint
+ * @param is
+ * @return
+ */
 inline
 cv::KeyPoint readKeyPoint(std::istream& is)
 {

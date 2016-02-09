@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     descriptor.cpp \
     #mainwindow.cpp \
     imagedescriptors.cpp \
-    imagelibrary.cpp
+    imagelibrary.cpp \
+    bagofword.cpp
 
 INCLUDEPATH += /usr/include/
 
@@ -43,4 +44,5 @@ HEADERS += \
     descriptor.h \
     #mainwindow.h \
     imagedescriptors.h \
-    imagelibrary.h
+    imagelibrary.h \
+    bagofword.h

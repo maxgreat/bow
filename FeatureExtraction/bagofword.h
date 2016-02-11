@@ -12,7 +12,7 @@
 
 namespace bow
 {
-    std::vector<std::vector<float> > Image2SIFT(cv::Mat& image);
+    std::vector<std::vector<float> > Image2SIFT(cv::Mat& image, int step = 8, bool show = false);
 
     float bowDistance(std::vector<int> bow1, std::vector<int> bow2);
 
@@ -26,21 +26,26 @@ class BagOfWord
 public:
     BagOfWord() { }
 
-    void AddImage(cv::Mat& image);
+    void AddImage(cv::Mat& image, int step = 16);
 
-    void AddImage(const std::string& imName)
+    void AddImage(const std::string& imName, int step = 16)
     {
         cv::Mat image = cv::imread(imName);
-        AddImage(image);
+        AddImage(image, step);
     }
 
     void saveDesc(const std::string& filename, int jump = 1);
 
     void loadCluster(const std::string& filename);
 
-    std::vector<int> ImageToBOW(cv::Mat& image);
+    std::vector<int> ImageToBOW(cv::Mat& image, bool show = false);
 
     bool isInit = false;
+
+    std::vector<std::vector<float> >& getClusters()
+    {
+        return clusters;
+    }
 
 private:
     std::vector<std::vector<float> > clusters;

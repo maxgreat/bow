@@ -25,7 +25,6 @@ using namespace cv;
  */
 static inline void loadBar(unsigned int x, unsigned int n,unsigned int w = 50)
 {
-    x++;
     if ( (x != n) && (x % (n/100+1) != 0) ) return;
 
     float ratio  =  x/(float)n;

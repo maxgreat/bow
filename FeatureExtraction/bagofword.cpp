@@ -1,15 +1,27 @@
 #include "bagofword.h"
 
+cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create(0,1);//Create SIFT detector
 
-
-std::vector<std::vector<float> > bow::Image2SIFT(cv::Mat& image)
+std::vector<std::vector<float> > bow::Image2SIFT(cv::Mat& image, int step, bool show)
 {
+    step = step;
     std::vector<std::vector<float> > dl;
     std::vector<cv::KeyPoint> lkp; //Used to store the detected keypoint
     cv::Mat desc; //Used to store SIFT descriptor
-    cv::Ptr<cv::xfeatures2d::SIFT> sift = cv::xfeatures2d::SIFT::create();//Create SIFT detector
-    sift->detectAndCompute(image,cv::noArray(),lkp,desc); //Detect keypoint and Compute sift
-
+    for(int i = step; i < image.rows-step; i += step){
+        for(int j = step; j < image.cols-step; j += step){
+            lkp.push_back(cv::KeyPoint(float(j), float(i), float(step*2)));
+        }
+    }
+    sift->compute(image,lkp,desc); //Detect keypoint and Compute sift
+    //sift->detectAndCompute(image,cv::noArray(),lkp,desc);
+    if(show)
+    {
+        show = show;
+        cv::Mat imageToDraw;
+        cv::drawKeypoints(image,lkp,imageToDraw, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+        cv::imshow("SIFT keypoints",imageToDraw);
+    }
     //Store the descriptor (in a cv::Mat) into the vector descList
     for(int i = 0; i < desc.rows; i++){
         std::vector<float> v;
@@ -44,7 +56,7 @@ float bow::descriptorDistance(std::vector<float> bow1, std::vector<float> bow2)
         fprintf(stderr,"EROOR computing distance : vector have to have the same size\n");
         return -1;
     }
-    float d = 0;
+    double d = 0;
     for(size_t i = 0; i < bow1.size(); i++)
     {
         d += (bow1[i]-bow2[i])*(bow1[i]-bow2[i]);
@@ -56,15 +68,15 @@ float bow::descriptorDistance(std::vector<float> bow1, std::vector<float> bow2)
 
 
 
-void BagOfWord::AddImage(cv::Mat& image)
+void BagOfWord::AddImage(cv::Mat& image, int step)
 {
     if(!clusters.empty())
     {
         fprintf(stderr, "ERROR: BagOfWord : cannot add an image, the cluster are already computed\n");
         return;
     }
-    std::vector<std::vector<float> > desc = bow::Image2SIFT(image);
-    for(auto& i : desc)
+    std::vector<std::vector<float> > desc = bow::Image2SIFT(image, step);
+    for(auto i : desc)
     {
         descList.push_back(i);
     }
@@ -104,7 +116,7 @@ void BagOfWord::loadCluster(const std::string& filename)
     file.close();
 }
 
-std::vector<int> BagOfWord::ImageToBOW(cv::Mat& image)
+std::vector<int> BagOfWord::ImageToBOW(cv::Mat& image, bool show)
 {
     std::vector<int> vec;
     if(clusters.empty())
@@ -116,7 +128,7 @@ std::vector<int> BagOfWord::ImageToBOW(cv::Mat& image)
     for(size_t i = 0; i < vec.size(); i++)
         vec[i] = 0;
 
-    std::vector<std::vector<float> > desc = bow::Image2SIFT(image);
+    std::vector<std::vector<float> > desc = bow::Image2SIFT(image, 8, show);
     for(auto& d : desc)
     {
         unsigned int closest = 0;

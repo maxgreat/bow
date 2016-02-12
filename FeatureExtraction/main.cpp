@@ -4,6 +4,7 @@
 #include "imagelibrary.h"
 #include <fstream>
 #include <glob.h>
+#include <cstdio>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "bagofword.h"
@@ -54,59 +55,93 @@ int main(/* int argc, char* argv[] */)
     }
   */
 
+//    BagOfWord bow;
+
+//    glob_t globbuf;
+//    glob((COLLECTION_DIR + "*.jpg").c_str(), GLOB_TILDE, NULL, &globbuf);
+//    glob((COLLECTION_DIR + "*.JPG").c_str(), GLOB_TILDE  | GLOB_APPEND, NULL, &globbuf);
+
+//    cerr << "Add image to the lib" << endl;
+//    for(size_t i = 0; i < globbuf.gl_pathc; i++){
+//        loadBar(i, globbuf.gl_pathc-1);
+//        bow.AddImage(globbuf.gl_pathv[i], 16);
+//        //cv::waitKey();
+//    }
+//    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_50", 50);
+//    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_20", 20);
+//    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_10", 10);
+//    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_5", 5);
+//    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_1", 1);
+
     BagOfWord bow;
+    bow.loadCluster(WORKING_DIR+"centers_dense_2000_10_sklearn");
+    cout << "clusters read" << endl << flush;
+//    cout << "BOW:";
+//    for(auto& i : b )
+//        cout << i << " ";
+//    cout << '\n' << endl;
+    cv::Mat im;
+    vector<vector<int> > vecBow;
 
     glob_t globbuf;
-    glob((COLLECTION_DIR + "*.jpg").c_str(), GLOB_TILDE, NULL, &globbuf);
-    glob((COLLECTION_DIR + "*.JPG").c_str(), GLOB_TILDE  | GLOB_APPEND, NULL, &globbuf);
+    glob((COLLECTION_DIR + "test/*.jpg").c_str(), GLOB_TILDE, NULL, &globbuf);
+    glob((COLLECTION_DIR + "test/*.JPG").c_str(), GLOB_TILDE  | GLOB_APPEND, NULL, &globbuf);
 
-    cerr << "Add image to the lib" << endl;
-    for(size_t i = 0; i < globbuf.gl_pathc; i++){
-        loadBar(i, globbuf.gl_pathc-1);
-        bow.AddImage(globbuf.gl_pathv[i], 16);
-        //cv::waitKey();
-    }
-    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_50", 50);
-    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_20", 20);
-    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_10", 10);
-    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_5", 5);
-    bow.saveDesc(WORKING_DIR+"SIFT_DENSE_1", 1);
+//    cv::Mat image = imread(globbuf.gl_pathv[0]);
+//    vector<vector<float> > sift1 = bow::Image2SIFT(image,16);
 
-//    BagOfWord bow;
-//    bow.loadCluster(WORKING_DIR+"/centers_2000_1_random");
-////    cout << "BOW:";
-////    for(auto& i : b )
-////        cout << i << " ";
-////    cout << '\n' << endl;
-//    cv::Mat im;
-//    vector<vector<int> > vecBow;
-//    for(size_t i = 0; i < globbuf.gl_pathc && i < 20; i++)
+//    FILE* f = fopen((WORKING_DIR+"sift_1_image").c_str(), "w");
+//    for(auto& v:sift1)
 //    {
+//        for(auto& e:v)
+//            fprintf(f, "%f ", e);
+//        fprintf(f,"\n");
+//    }
+
+//    for(size_t i = 0; i < globbuf.gl_pathc && i < 1; i++)
+//    {
+//        cout << "New image added" << endl;
 //        im = cv::imread(globbuf.gl_pathv[i]);
-//        vecBow.push_back(bow.ImageToBOW(im,16,true));
-//        cv::waitKey(0);
-//    }
-//    cout << "Compute histogram" << endl;
-//    //Compute historgramme:
-//    int hist[2000];
-//    for(int i = 0; i < 2000; i++)
-//        hist[i] = 0;
-//    unsigned long long int somme = 0;
-//    for(auto& b:vecBow)
-//    {
-//        for(int i = 0; i < 2000; i++)
-//        {
-//            hist[i] += b[i];
-//            somme += b[i];
-//        }
+//        vecBow.push_back(bow.ImageToBOW(im,false));
+//        //cv::waitKey(0);
 //    }
 
-//    cout << "Histogramme :" << endl;
-//    for(int i = 0; i < 2000 ; i++)
-//    {
-//        cout << (int)(hist[i]*100.0/somme) << " ";
-//    }
-//    cout << endl << flush;
+
+    cv::Mat image = imread(globbuf.gl_pathv[0]);
+    vector<vector<float> > sift1 = bow::Image2SIFT(image,16);
+    vector<int> bow1image = bow.ImageToBOW(image,false);
+    FILE* f = fopen((WORKING_DIR+"sift_1_image").c_str(), "w");
+    for(auto& v:sift1)
+    {
+        for(auto& e:v)
+            fprintf(f, "%f ", e);
+        fprintf(f,"\n");
+    }
+    /*
+    cout << "Compute histogram" << endl;
+    //Compute historgramme:
+    int hist[2000];
+    for(int i = 0; i < 2000; i++)
+        hist[i] = 0;
+    unsigned long long int somme = 0;
+    for(auto& b:vecBow)
+    {
+        for(int i = 0; i < 2000; i++)
+        {
+            hist[i] += b[i];
+            somme += b[i];
+        }
+    }*/
+
+    for(int i = 0; i < 2000 ; i++)
+    {
+        if(bow1image[i] > 0)
+        {
+//            cout << i << " : " << (hist[i]*100.0/somme) << "\n";
+            cout << bow1image[i] << " " << i << "\n";
+        }
+    }
+    cout << endl << flush;
     return 0;
 }
 

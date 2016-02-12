@@ -14,9 +14,9 @@ namespace bow
 {
     std::vector<std::vector<float> > Image2SIFT(cv::Mat& image, int step = 8, bool show = false);
 
-    float bowDistance(std::vector<int> bow1, std::vector<int> bow2);
+    double bowDistance(std::vector<int>& bow1, std::vector<int>& bow2);
 
-    float descriptorDistance(std::vector<float> bow1, std::vector<float> bow2);
+    float descriptorDistance(std::vector<float> &desc1, std::vector<float> &desc2);
 }
 
 

@@ -34,22 +34,7 @@ std::vector<std::vector<float> > bow::Image2SIFT(cv::Mat& image, int step, bool 
 }
 
 
-float bow::bowDistance(std::vector<int> bow1, std::vector<int> bow2)
-{
-    if(bow1.size() != bow2.size())
-    {
-        fprintf(stderr,"EROOR computing distance : vector have to have the same size\n");
-        return -1;
-    }
-    int d = 0;
-    for(size_t i = 0; i < bow1.size(); i++)
-    {
-        d += (bow1[i]+bow2[i])*(bow1[i]+bow2[i]);
-    }
-    return sqrt(d);
-}
-
-float bow::descriptorDistance(std::vector<float> bow1, std::vector<float> bow2)
+double bow::bowDistance(std::vector<int> &bow1, std::vector<int> &bow2)
 {
     if(bow1.size() != bow2.size())
     {
@@ -60,6 +45,21 @@ float bow::descriptorDistance(std::vector<float> bow1, std::vector<float> bow2)
     for(size_t i = 0; i < bow1.size(); i++)
     {
         d += (bow1[i]-bow2[i])*(bow1[i]-bow2[i]);
+    }
+    return sqrt(d);
+}
+
+float bow::descriptorDistance(std::vector<float>& desc1, std::vector<float>& desc2)
+{
+    if(desc1.size() != desc2.size())
+    {
+        fprintf(stderr,"EROOR computing distance : vector have to have the same size\n");
+        return -1;
+    }
+    double d = 0;
+    for(size_t i = 0; i < desc1.size(); i++)
+    {
+        d += (desc1[i]-desc2[i])*(desc1[i]-desc2[i]);
     }
     return sqrt(d);
 }
@@ -125,20 +125,24 @@ std::vector<int> BagOfWord::ImageToBOW(cv::Mat& image, bool show)
         return vec;
     }
     vec.resize(clusters.size());
-    for(size_t i = 0; i < vec.size(); i++)
+    for(size_t i = 0; i < vec.size(); i++) //set vec to 0
         vec[i] = 0;
 
     std::vector<std::vector<float> > desc = bow::Image2SIFT(image, 8, show);
+    cout << "Sift in image :" << desc.size() << endl;
     for(auto& d : desc)
     {
         unsigned int closest = 0;
-        float dist = bow::descriptorDistance(clusters[0], d);
-        for(size_t i = 1; i < clusters.size(); i++)
+        double dist = bow::descriptorDistance(clusters[0], d);
+        for(size_t i = 1; i < clusters.size(); i++) //looking for the closest cluster
         {
             if(bow::descriptorDistance(clusters[i], d) < dist)
+            {
                 closest = i;
+                dist = bow::descriptorDistance(clusters[i], d);
+            }
         }
-        vec[closest]++;
+        vec[closest]++;//+1 in the closest cluster index
     }
 
     return vec;
